@@ -8,6 +8,7 @@ import {
   Type
 } from '@angular/core';
 import { ROUTES } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
 
 // components
 import { LoadableComponent } from './components/loadable.component';
@@ -18,10 +19,8 @@ import { LoadableService } from './services/loadable.service';
 // models
 import { LOADABLE_COMPONENT, LOADABLE_MANIFESTS, LoadableManifest } from './models/loadable-manifest.model';
 
-
 @NgModule({
-  imports: [
-  ],
+  imports: [BrowserModule],
   declarations: [LoadableComponent],
   exports: [LoadableComponent]
 })
