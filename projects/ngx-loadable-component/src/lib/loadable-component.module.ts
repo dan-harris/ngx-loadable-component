@@ -8,7 +8,7 @@ import {
   Type
 } from '@angular/core';
 import { ROUTES } from '@angular/router';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 // components
 import { LoadableComponent } from './components/loadable.component';
@@ -20,12 +20,21 @@ import { LoadableService } from './services/loadable.service';
 import { LOADABLE_COMPONENT, LOADABLE_MANIFESTS, LoadableManifest } from './models/loadable-manifest.model';
 
 @NgModule({
-  imports: [BrowserModule],
+  imports: [CommonModule],
   declarations: [LoadableComponent],
   exports: [LoadableComponent]
 })
 export class LoadableComponentModule {
+
+  /**
+   * module root instantiation
+   * (used to setup injectable providers used in dynamic component load/render)
+   */
   static forRoot(manifests: Array<LoadableManifest>): ModuleWithProviders {
+
+    // mutate manifest to set the path values 
+    manifests.forEach((manifest: LoadableManifest) => { manifest.path = `loadable-${manifest.componentId.toLowerCase}` });
+
     return {
       ngModule: LoadableComponentModule,
       providers: [
@@ -38,6 +47,11 @@ export class LoadableComponentModule {
       ]
     };
   }
+
+  /**
+   * module child instantiation
+   * (used by a loadable component module to register themselves as loadable)
+   */
   static forChild(component: Type<any>): ModuleWithProviders {
     return {
       ngModule: LoadableComponentModule,
@@ -50,4 +64,6 @@ export class LoadableComponentModule {
       ]
     };
   }
+
 }
+

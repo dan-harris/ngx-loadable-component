@@ -30,14 +30,14 @@ export class LoadableComponent implements OnDestroy {
   /**
    * id of component in loadable manifest to load & render
    */
-  @Input() componentId: string = 'DashboardGaugeComponent';
+  @Input() componentId: string;
 
   /**
    * event to load component (allows external control over when to actually load & render component)
    */
   @Input()
   set loadComponent(loadComponent: boolean) {
-    if (loadComponent && !this._hasLoadedComponentChunk) this.loadComponentChunk();
+    if (loadComponent && this.componentId && !this._hasLoadedComponentChunk) this.loadComponentChunk();
   }
 
   /**
@@ -156,8 +156,8 @@ export class LoadableComponent implements OnDestroy {
     // create component & set the current component ref
     this._componentRef = this.loadableComponentOutlet.createComponent(componentFactory);
 
-    // add fadein to component style
-    this._renderer.addClass(this._componentRef.location.nativeElement, 'wrc-animation--content--fadein');
+    // add any classes //TODO: add this feature
+    // this._renderer.addClass(this._componentRef.location.nativeElement, '');
 
     // set component inputs
     this.setInputs();

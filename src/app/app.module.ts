@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { LoadableComponentModule } from 'ngx-loadable-component';
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './containers/app/app.component';
+
+import { appLoadableManifests } from './app-loadable.manifests';
 
 @NgModule({
   declarations: [
@@ -11,7 +13,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    LoadableComponentModule
+    LoadableComponentModule.forRoot(appLoadableManifests)
   ],
   providers: [],
   bootstrap: [AppComponent]
