@@ -31,10 +31,6 @@ export class LoadableComponentModule {
    * (used to setup injectable providers used in dynamic component load/render)
    */
   static forRoot(manifests: Array<LoadableManifest>): ModuleWithProviders {
-
-    // mutate manifest to set the path values 
-    manifests.forEach((manifest: LoadableManifest) => { manifest.path = `loadable-${manifest.componentId.toLowerCase}` });
-
     return {
       ngModule: LoadableComponentModule,
       providers: [

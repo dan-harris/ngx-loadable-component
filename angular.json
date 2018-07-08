@@ -45,7 +45,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngx-loadable-component-app:build"
+            "browserTarget": "ngx-loadable-component-app:build",
+            "aot": true
           },
           "configurations": {
             "production": {
