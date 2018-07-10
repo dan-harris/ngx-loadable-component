@@ -10,8 +10,8 @@ import { Subject, merge, Observable } from 'rxjs';
 @Component({
   selector: 'loadable-component',
   template: `
-    <!-- allow transcluded content to show when loading -->
-    <ng-container *ngIf="isLoading">
+    <!-- allow transcluded content to show if component not yet loaded -->
+    <ng-container *ngIf="!hasLoadedComponent">
       <ng-content></ng-content>
     </ng-container>
     <!-- element where we insert our dynamic loadable component -->
@@ -124,6 +124,10 @@ export class LoadableComponent implements OnDestroy {
     // unsubscribe on component teardown
     this._unsubscribed$.next(false);
     this._unsubscribed$.complete();
+  }
+
+  get hasLoadedComponent(): boolean {
+    return this._hasLoadedComponentChunk;
   }
 
   /**
