@@ -1,1 +1,80 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* reset base html container */
+html {
+  height: 100%;
+  width: 100%;
+  font-size: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+/* default button */
+button {
+  background: none;
+  border: 2px solid black;
+  font-size: 1rem;
+  text-transform: uppercase;
+  padding: 0.2rem;
+}
+
+button:hover {
+  background-color: #e7e7e7;
+  cursor: pointer;
+}
+
+/* loading animation */
+@keyframes loadFadeInOut {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@-o-keyframes loadFadeInOut {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@-moz-keyframes loadFadeInOut {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@-webkit-keyframes loadFadeInOut {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+.animation--load-fadein-fadeout {
+  -webkit-animation: loadFadeInOut 2s infinite;
+  -moz-animation: loadFadeInOut 2s infinite;
+  -o-animation: loadFadeInOut 2s infinite;
+  animation: loadFadeInOut 2s infinite;
+}

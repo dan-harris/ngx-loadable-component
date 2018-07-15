@@ -8,6 +8,7 @@ import {
   Type
 } from '@angular/core';
 import { ROUTES } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 // components
 import { LoadableComponent } from './components/loadable.component';
@@ -18,14 +19,17 @@ import { LoadableService } from './services/loadable.service';
 // models
 import { LOADABLE_COMPONENT, LOADABLE_MANIFESTS, LoadableManifest } from './models/loadable-manifest.model';
 
-
 @NgModule({
-  imports: [
-  ],
+  imports: [CommonModule],
   declarations: [LoadableComponent],
   exports: [LoadableComponent]
 })
 export class LoadableComponentModule {
+
+  /**
+   * module root instantiation
+   * (used to setup injectable providers used in dynamic component load/render)
+   */
   static forRoot(manifests: Array<LoadableManifest>): ModuleWithProviders {
     return {
       ngModule: LoadableComponentModule,
@@ -39,6 +43,11 @@ export class LoadableComponentModule {
       ]
     };
   }
+
+  /**
+   * module child instantiation
+   * (used by a loadable component module to register themselves as loadable)
+   */
   static forChild(component: Type<any>): ModuleWithProviders {
     return {
       ngModule: LoadableComponentModule,
@@ -51,4 +60,6 @@ export class LoadableComponentModule {
       ]
     };
   }
+
 }
+

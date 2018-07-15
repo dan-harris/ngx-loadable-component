@@ -10,8 +10,8 @@ import { Subject, merge, Observable } from 'rxjs';
 @Component({
   selector: 'loadable-component',
   template: `
-    <!-- allow transcluded content to show when loading -->
-    <ng-container *ngIf="isLoading">
+    <!-- allow transcluded content to show if component not yet loaded -->
+    <ng-container *ngIf="!hasLoadedComponent">
       <ng-content></ng-content>
     </ng-container>
     <!-- element where we insert our dynamic loadable component -->
@@ -30,14 +30,14 @@ export class LoadableComponent implements OnDestroy {
   /**
    * id of component in loadable manifest to load & render
    */
-  @Input() componentId: string = 'DashboardGaugeComponent';
+  @Input() componentId: string;
 
   /**
    * event to load component (allows external control over when to actually load & render component)
    */
   @Input()
   set loadComponent(loadComponent: boolean) {
-    if (loadComponent && !this._hasLoadedComponentChunk) this.loadComponentChunk();
+    if (loadComponent && this.componentId && !this._hasLoadedComponentChunk) this.loadComponentChunk();
   }
 
   /**
@@ -126,6 +126,10 @@ export class LoadableComponent implements OnDestroy {
     this._unsubscribed$.complete();
   }
 
+  get hasLoadedComponent(): boolean {
+    return this._hasLoadedComponentChunk;
+  }
+
   /**
    * load the loadable component chunk & then render
    */
@@ -156,8 +160,8 @@ export class LoadableComponent implements OnDestroy {
     // create component & set the current component ref
     this._componentRef = this.loadableComponentOutlet.createComponent(componentFactory);
 
-    // add fadein to component style
-    this._renderer.addClass(this._componentRef.location.nativeElement, 'wrc-animation--content--fadein');
+    // add any classes //TODO: add this feature
+    // this._renderer.addClass(this._componentRef.location.nativeElement, '');
 
     // set component inputs
     this.setInputs();
