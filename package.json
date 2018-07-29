@@ -11,7 +11,11 @@
     "test:lib": "ng test ngx-loadable-component --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "stats:bundlesize": "bundlesize"
+    "stats:bundlesize": "bundlesize",
+    "commit": "git-cz",
+    "commitmsg": "validate-commit-msg",
+    "precommit": "lint-staged",
+    "prepush": "npm run test:prod"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +44,9 @@
     "angular-tslint-rules": "^1.4.1",
     "bundlesize": "^0.17.0",
     "codelyzer": "~4.2.1",
+    "commitizen": "^2.10.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^0.14.3",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
@@ -48,14 +55,38 @@
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-mocha-reporter": "^2.2.5",
+    "lint-staged": "^7.2.0",
     "ng-packagr": "^3.0.0-rc.2",
+    "prettier": "^1.13.7",
     "protractor": "~5.3.0",
     "puppeteer": "^1.5.0",
     "ts-node": "~5.0.1",
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.2"
+    "tslint-config-prettier": "^1.13.0",
+    "typescript": "~2.7.2",
+    "validate-commit-msg": "^2.14.0"
+  },
+  "lint-staged": {
+    "*.{json,js}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "tslint -t codeFrame",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    },
+    "validate-commit-msg": {
+      "types": "conventional-commit-types",
+      "helpMessage": "Use \"npm run commit\" instead, we use conventional-changelog format :) (https://github.com/commitizen/cz-cli)"
+    }
   },
   "bundlesize": [
     {
