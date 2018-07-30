@@ -15,7 +15,7 @@
     "commit": "git-cz",
     "commitmsg": "validate-commit-msg",
     "precommit": "lint-staged",
-    "prepush": "npm run test:prod"
+    "prepush": "npm run e2e"
   },
   "private": true,
   "dependencies": {
@@ -59,7 +59,8 @@
     "ng-packagr": "^3.0.0-rc.2",
     "prettier": "^1.13.7",
     "protractor": "~5.3.0",
-    "puppeteer": "^1.5.0",
+    "protractor-console-plugin": "^0.1.1",
+    "puppeteer": "^0.13.0",
     "ts-node": "~5.0.1",
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
