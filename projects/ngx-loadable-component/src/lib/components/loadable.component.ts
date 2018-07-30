@@ -1,11 +1,26 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactory, ComponentRef, Input, KeyValueChangeRecord, KeyValueChanges, KeyValueDiffer, KeyValueDiffers, Renderer2, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactory,
+  ComponentRef,
+  Input,
+  KeyValueChangeRecord,
+  KeyValueChanges,
+  KeyValueDiffer,
+  KeyValueDiffers,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { merge, Observable, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-
-// library imports
-import { LoadableService } from '../services/loadable.service';
 import { LoadableComponentInputs } from '../models/loadable-component-inputs.model';
 import { LoadableComponentOutputs } from '../models/loadable-component-outputs.model';
-import { Subject, merge, Observable } from 'rxjs';
+// library imports
+import { LoadableService } from '../services/loadable.service';
 
 @Component({
   selector: 'loadable-component',
@@ -20,12 +35,12 @@ import { Subject, merge, Observable } from 'rxjs';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoadableComponent implements OnDestroy {
-
+export class LoadableComponent implements OnInit, OnDestroy {
   /**
    *  view ref where we insert our dynamic loadable component
    */
-  @ViewChild('loadableComponentOutlet', { read: ViewContainerRef }) loadableComponentOutlet: ViewContainerRef;
+  @ViewChild('loadableComponentOutlet', { read: ViewContainerRef })
+  loadableComponentOutlet: ViewContainerRef;
 
   /**
    * id of component in loadable manifest to load & render
@@ -59,7 +74,7 @@ export class LoadableComponent implements OnDestroy {
    */
   @Input() componentOutputs: LoadableComponentOutputs = {};
 
-  /** 
+  /**
    * is currently loading dynamic component
    */
   isLoading: boolean = false;
@@ -77,45 +92,35 @@ export class LoadableComponent implements OnDestroy {
    */
   private _outputUnsubscribed$: Observable<boolean>;
 
-  /** 
+  /**
    * dynamic component inputs
    */
   private _componentInputs: LoadableComponentInputs = {};
-  /** 
+  /**
    * current dynamic component ref
    */
   private _componentRef: ComponentRef<any>;
-  /** 
+  /**
    * flag for whether we already have the component chunk loaded
    */
   private _hasLoadedComponentChunk: boolean = false;
-  /** 
+  /**
    * differ for component inputs
    */
   private _componentInputsDiffer: KeyValueDiffer<any, any>;
 
-  constructor(
-    private _loadableService: LoadableService,
-    private _keyValueDiffers: KeyValueDiffers,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _renderer: Renderer2
-  ) {
-
+  constructor(private _loadableService: LoadableService, private _keyValueDiffers: KeyValueDiffers, private _changeDetectorRef: ChangeDetectorRef, private _renderer: Renderer2) {
     // setup our differ function
-    this._componentInputsDiffer = this._keyValueDiffers.find(this.componentInputs)
-      .create();
-
+    this._componentInputsDiffer = this._keyValueDiffers.find(this.componentInputs).create();
   }
 
   ngOnInit(): void {
     // create actions for when we change dynamic component
-    this._changedComponent$
-      .pipe(takeUntil(this._unsubscribed$))
-      .subscribe(() => {
-        // do a change detection cycle
-        this._changeDetectorRef.detectChanges();
-        this._componentRef.changeDetectorRef.detectChanges();
-      })
+    this._changedComponent$.pipe(takeUntil(this._unsubscribed$)).subscribe(() => {
+      // do a change detection cycle
+      this._changeDetectorRef.detectChanges();
+      this._componentRef.changeDetectorRef.detectChanges();
+    });
     // unsubscribe from dynamic outputs when we change or destroy component
     this._outputUnsubscribed$ = merge(this._unsubscribed$, this._changedComponent$);
   }
@@ -156,7 +161,7 @@ export class LoadableComponent implements OnDestroy {
   /**
    * create & render a dynamic component
    */
-  private createComponent(componentFactory: ComponentFactory<any>) {
+  private createComponent(componentFactory: ComponentFactory<any>): void {
     // create component & set the current component ref
     this._componentRef = this.loadableComponentOutlet.createComponent(componentFactory);
 
@@ -175,7 +180,7 @@ export class LoadableComponent implements OnDestroy {
    */
   private setInputs(): void {
     const inputKeys: Array<string> = Object.keys(this.componentInputs);
-    inputKeys.map((key: string) => this._componentRef.instance[key] = this.componentInputs[key]);
+    inputKeys.map((key: string) => (this._componentRef.instance[key] = this.componentInputs[key]));
   }
 
   /**
@@ -183,9 +188,7 @@ export class LoadableComponent implements OnDestroy {
    */
   private setOutputs(): void {
     const outputKeys: Array<string> = Object.keys(this.componentOutputs);
-    outputKeys.map((key: string) => this._componentRef.instance[key]
-      .pipe(takeUntil(this._outputUnsubscribed$))
-      .subscribe((value: any) => this.componentOutputs[key](value)));
+    outputKeys.map((key: string) => this._componentRef.instance[key].pipe(takeUntil(this._outputUnsubscribed$)).subscribe((value: any) => this.componentOutputs[key](value)));
   }
 
   /**
@@ -213,5 +216,4 @@ export class LoadableComponent implements OnDestroy {
       this._componentRef.changeDetectorRef.detectChanges();
     }
   }
-
 }

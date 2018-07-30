@@ -1,11 +1,27 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element, ElementFinder, promise } from 'protractor';
 
 export class AppPage {
-  navigateTo() {
+  navigateTo(): promise.Promise<any> {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getLoadButton(): ElementFinder {
+    return element(by.css('.app--buttons button'));
+  }
+
+  clickLoadButton(): promise.Promise<void> {
+    return this.getLoadButton().click();
+  }
+
+  getLoadableComponent(): ElementFinder {
+    return element(by.css('loadable-component:first-of-type'));
+  }
+
+  getLoadableChildComponent(): ElementFinder {
+    return element(by.css('app-star-struck-face-emoji'));
+  }
+
+  getPlaceholder(): ElementFinder {
+    return this.getLoadableComponent().element(by.css('app-placeholder-emoji'));
   }
 }
