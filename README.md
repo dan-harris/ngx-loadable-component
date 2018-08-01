@@ -1,4 +1,4 @@
-# ngx-loadable-component
+![ngx-loadable-component](https://github.com/dan-harris/ngx-loadable-component/raw/master/logo.png)
 
 Dynamically lazy load & code-split your Angular components.
 
@@ -16,7 +16,7 @@ Core functionality derived _heavily_ from [dynamically loading components with a
 
 🆓 free code splitting via Angular
 
-⚡ [Stackblitz demo](https://stackblitz.com/github/dan-harris/ngx-loadable-component/)
+⚡ [demo](http://ngx-loadable-component.danharris.io)
 
 🤓 ingenious core pattern thought up by _[actual smart people](https://blog.angularindepth.com/dynamically-loading-components-with-angular-cli-92a3c69bcd28)_
 
