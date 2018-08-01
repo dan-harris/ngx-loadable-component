@@ -1,0 +1,28 @@
+{
+  "rulesDirectory": ["node_modules/codelyzer"],
+  "extends": ["angular-tslint-rules", "tslint-config-prettier"],
+  "rules": {
+    "no-implicit-dependencies": false,
+    "pipe-naming": [false],
+    "component-selector": false,
+    "directive-selector": false,
+    "newline-before-return": false,
+    "no-null-keyword": false,
+    "no-inferrable-types": false,
+    "no-invalid-this": true,
+    "no-magic-numbers": true,
+    "no-empty": false,
+    "prefer-object-spread": false,
+    "prefer-function-over-method": false,
+    "typedef": [true, "call-signature", "parameter", "arrow-parameter", "property-declaration", "variable-declaration", "member-variable-declaration"],
+    "align": [false],
+    "member-ordering": [
+      true,
+      {
+        "order": ["static-field", "instance-field", "static-method", "instance-method"]
+      }
+    ],
+    "i18n": false,
+    "no-unused-css": false
+  }
+}
