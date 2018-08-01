@@ -1,25 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ComponentFactory,
-  ComponentRef,
-  Input,
-  KeyValueChangeRecord,
-  KeyValueChanges,
-  KeyValueDiffer,
-  KeyValueDiffers,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactory, ComponentRef, Input, KeyValueChangeRecord, KeyValueChanges, KeyValueDiffer, KeyValueDiffers, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { merge, Observable, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { LoadableComponentInputs } from '../models/loadable-component-inputs.model';
 import { LoadableComponentOutputs } from '../models/loadable-component-outputs.model';
-// library imports
 import { LoadableService } from '../services/loadable.service';
 
 @Component({
@@ -32,8 +15,7 @@ import { LoadableService } from '../services/loadable.service';
     <!-- element where we insert our dynamic loadable component -->
     <div #loadableComponentOutlet></div>
   `,
-  styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styles: []
 })
 export class LoadableComponent implements OnInit, OnDestroy {
   /**
@@ -122,7 +104,8 @@ export class LoadableComponent implements OnInit, OnDestroy {
       this._componentRef.changeDetectorRef.detectChanges();
     });
     // unsubscribe from dynamic outputs when we change or destroy component
-    this._outputUnsubscribed$ = merge(this._unsubscribed$, this._changedComponent$);
+    // TODO: handle dynamically changing component at runtime
+    this._outputUnsubscribed$ = merge(this._unsubscribed$);
   }
 
   ngOnDestroy(): void {
