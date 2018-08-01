@@ -1,27 +1,277 @@
-# NgxLoadableComponentApp
+# ngx-loadable-component
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.3.
+Dynamically lazy load & code-split your Angular components.
 
-## Development server
+(Supports Angular 6+)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Core functionality derived _heavily_ from [dynamically loading components with angular-cli](https://blog.angularindepth.com/dynamically-loading-components-with-angular-cli-92a3c69bcd28)
 
-## Code scaffolding
+## Easily create dynamic ✨, code-split ⚡, components in Angular 🅰
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+🚧 no mucking around with seperate build processes
 
-## Build
+✨ dynamically instantiate components
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+💤 lazy load components
 
-## Running unit tests
+🆓 free code splitting via Angular
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+⚡ [Stackblitz demo](https://stackblitz.com/github/dan-harris/ngx-loadable-component/)
 
-## Running end-to-end tests
+🤓 ingenious core pattern thought up by _[actual smart people](https://blog.angularindepth.com/dynamically-loading-components-with-angular-cli-92a3c69bcd28)_
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Installation
 
-## Further help
+Install via npm;
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```
+npm i ngx-loadable-component
+```
+
+## Setup
+
+Create a component you wish to dynamically load... e.g. **loadable component**
+
+_upside-down-face-emoji.component.ts_
+
+```typescript
+@Component({
+  selector: 'app-upside-down-face-emoji',
+  changeDetection: ChangeDetectionStrategy.OnPush
+  ...
+})
+export class UpsideDownFaceEmojiComponent { }
+```
+
+Then create a module for the **loadable component**:
+
+_upside-down-face-emoji.module.ts_
+
+```typescript
+import { LoadableComponentModule } from 'ngx-loadable-component';
+
+import { UpsideDownFaceEmojiComponent } from './upside-down-face-emoji.component';
+
+@NgModule({
+  imports: [
+    // register as loadable component
+    LoadableComponentModule.forChild(UpsideDownFaceEmojiComponent)
+  ],
+  declarations: [UpsideDownFaceEmojiComponent]
+})
+export class UpsideDownFaceEmojiComponentModule {}
+```
+
+Create a **manifest** file which lists all your **loadable components**:
+
+_app-loadable.manifests.ts_
+
+```typescript
+import { LoadableManifest } from 'ngx-loadable-component';
+
+export enum LoadableComponentIds {
+  UPSIDE_DOWN_FACE = 'UpsideDownFaceEmojiComponent'
+}
+
+export const appLoadableManifests: Array<LoadableManifest> = [
+  {
+    // used to retrieve the loadable component later
+    componentId: LoadableComponentIds.UPSIDE_DOWN_FACE,
+    // must be a unique value within the app...
+    // but apart from that only used by angular when loading component
+    path: `loadable-${LoadableComponentIds.UPSIDE_DOWN_FACE}`,
+    // relative path to component module
+    loadChildren: './components/upside-down-face-emoji/upside-down-face-emoji.module#UpsideDownFaceEmojiComponentModule'
+  }
+];
+```
+
+Add the **loadable component manifest** & **loadable component module** to root app module:
+
+_app.module.ts_
+
+```typescript
+import { LoadableComponentModule } from 'ngx-loadable-component';
+
+// loadable components manifest
+import { appLoadableManifests } from './app-loadable.manifests';
+
+@NgModule({
+  declarations: [
+      ...
+  ],
+  imports: [
+    ...
+    // components to load as seperate async
+    LoadableComponentModule.forRoot(appLoadableManifests)
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+## Usage (basic)
+
+Add a **loadable component** where needed:
+
+_app.component.html_
+
+```html
+<div class="app--emojis">
+
+    <loadable-component [componentId]="UPSIDE_DOWN_FACE_COMPONENT_ID" [loadComponent]="loadUpsideDownFaceComponent">
+        <!-- any element in the loadable component content area will only be shown whilst loadComponent is false -->
+        <app-placeholder-emoji></app-placeholder-emoji>
+    </loadable-component>
+
+</div>
+```
+
+_app.component.ts_
+
+```typescript
+import { LoadableComponentIds } from '../../app-loadable.manifests';
+
+@Component({ ... })
+export class AppComponent {
+  // loadable component ids
+  UPSIDE_DOWN_FACE_COMPONENT_ID: string = LoadableComponentIds.UPSIDE_DOWN_FACE;
+
+  // flags to load components
+  // setting this to 'true' will cause the loadable component
+  // to load the specified component id
+  loadUpsideDownFaceComponent: boolean = false;
+}
+```
+
+## Usage (with Inputs/Outputs)
+
+If our **loadable component** has inputs/outputs - like so:
+
+_upside-down-face-emoji.component.html_
+
+```html
+<a (click)="onClick()">
+    <div>🙃</div>
+    <div>{{ text }}</div>
+</a>
+```
+
+_upside-down-face-emoji.component.ts_
+
+```typescript
+export class UpsideDownFaceEmojiComponent {
+  @Input() text: string = 'upside down';
+
+  @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
+
+  constructor() {}
+
+  onClick(): void {
+    this.clicked.emit(this.text);
+  }
+}
+```
+
+We then create a model representing the inputs/outputs (for some typing goodness 💯):
+
+_upside-down-face-emoji.inputs.model.ts_
+
+```typescript
+import { LoadableComponentInputs } from 'ngx-loadable-component';
+
+export interface UpsideDownFaceEmojiComponentInputs extends LoadableComponentInputs {
+  text: string;
+}
+```
+
+_upside-down-face-emoji.outputs.model.ts_
+
+```typescript
+import { LoadableComponentOutputs } from 'ngx-loadable-component';
+
+export interface UpsideDownFaceEmojiComponentOutputs extends LoadableComponentOutputs {
+  clicked: Function;
+}
+```
+
+And add our inputs/outputs to the **loadable component** wherever its used:
+
+_app.component.html_
+
+```html
+<div class="app--emojis">
+
+    <loadable-component
+        [componentId]="UPSIDE_DOWN_FACE_COMPONENT_ID"
+        [loadComponent]="loadUpsideDownFaceComponent"
+        [componentInputs]="upsideDownFaceInputs"
+        [componentOutputs]="upsideDownFaceOutputs">
+        <!-- any element in the loadable component content area will only be shown whilst loadComponent is false -->
+        <app-placeholder-emoji></app-placeholder-emoji>
+    </loadable-component>
+
+</div>
+```
+
+_app.component.ts_
+
+```typescript
+import { LoadableComponentIds } from '../../app-loadable.manifests';
+import { UpsideDownFaceEmojiComponentInputs } from '../../components/upside-down-face-emoji/models/upside-down-face-emoji.inputs.model';
+import { UpsideDownFaceEmojiComponentOutputs } from '../../components/upside-down-face-emoji/models/upside-down-face-emoji.outputs.model';
+
+@Component({ ... })
+export class AppComponent {
+  // loadable component ids
+  UPSIDE_DOWN_FACE_COMPONENT_ID: string = LoadableComponentIds.UPSIDE_DOWN_FACE;
+
+  // flags to load components
+  // setting this to 'true' will cause the loadable component
+  // to load the specified component id
+  loadUpsideDownFaceComponent: boolean = false;
+
+  // inputs for loadable component
+  get upsideDownFaceInputs(): UpsideDownFaceEmojiComponentInputs {
+    return {
+      text: 'not upside down'
+    }
+  }
+
+  // outputs for loadable component
+  get upsideDownFaceOutputs(): UpsideDownFaceEmojiComponentOutputs {
+    return {
+      clicked: (text: string) => this.onClickedUpsideDownFace(text)
+    }
+  }
+
+  onClickedUpsideDownFace(text: string): void {
+    console.log('🖱', text);
+  }
+}
+```
+
+And voila! we now have input/output binding 👌 (**ngx-loadable-component** will handle the change detection).
+
+## Author
+
+🤔 created by Dan Harris
+
+👨‍💻 website: [danharris.io](https://danharris.io)
+
+🐤 twitter: [@danharris_io](http://twitter.com/danharris_io)
+
+☕ made with love and late nights
+
+## Odds & Ends
+
+👀 MIT License
+
+💖 if you've read this far... thanks for the star
+
+😎 title font courtesy of the awesome [lazer84 font](http://sunrise-digital.net/lazer84/)
+
+😡 please send all abusive letters via handwritten note to [this address](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+
+📫 all constructive feedback welcome.
