@@ -1,4 +1,19 @@
-import { ChangeDetectorRef, Component, ComponentFactory, ComponentRef, Input, KeyValueChangeRecord, KeyValueChanges, KeyValueDiffer, KeyValueDiffers, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ComponentFactory,
+  ComponentRef,
+  Input,
+  KeyValueChangeRecord,
+  KeyValueChanges,
+  KeyValueDiffer,
+  KeyValueDiffers,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { merge, Observable, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { LoadableComponentInputs } from '../models/loadable-component-inputs.model';
@@ -57,6 +72,19 @@ export class LoadableComponent implements OnInit, OnDestroy {
   @Input() componentOutputs: LoadableComponentOutputs = {};
 
   /**
+   * add any custom classes to loadable component
+   * (useful for adding custom css transitions .etc)
+   */
+  @Input()
+  set componentCssClasses(componentCssClasses: Array<string>) {
+    this._componentCssClasses = componentCssClasses;
+    this.addCustomCssClasses();
+  }
+  get componentCssClasses(): Array<string> {
+    return this._componentCssClasses;
+  }
+
+  /**
    * is currently loading dynamic component
    */
   isLoading: boolean = false;
@@ -90,6 +118,10 @@ export class LoadableComponent implements OnInit, OnDestroy {
    * differ for component inputs
    */
   private _componentInputsDiffer: KeyValueDiffer<any, any>;
+  /**
+   * custom classes for loadable component
+   */
+  private _componentCssClasses: Array<string> = [];
 
   constructor(private _loadableService: LoadableService, private _keyValueDiffers: KeyValueDiffers, private _changeDetectorRef: ChangeDetectorRef, private _renderer: Renderer2) {
     // setup our differ function
@@ -136,6 +168,15 @@ export class LoadableComponent implements OnInit, OnDestroy {
         this._hasLoadedComponentChunk = true;
         this.isLoading = false;
 
+        // set component inputs
+        this.setInputs();
+
+        // set component outputs
+        this.setOutputs();
+
+        // add any classes
+        this.addCustomCssClasses();
+
         // emit component change
         this._changedComponent$.next(true);
       });
@@ -147,15 +188,6 @@ export class LoadableComponent implements OnInit, OnDestroy {
   private createComponent(componentFactory: ComponentFactory<any>): void {
     // create component & set the current component ref
     this._componentRef = this.loadableComponentOutlet.createComponent(componentFactory);
-
-    // add any classes //TODO: add this feature
-    // this._renderer.addClass(this._componentRef.location.nativeElement, '');
-
-    // set component inputs
-    this.setInputs();
-
-    // set component outputs
-    this.setOutputs();
   }
 
   /**
@@ -198,5 +230,13 @@ export class LoadableComponent implements OnInit, OnDestroy {
       // run change detection
       this._componentRef.changeDetectorRef.detectChanges();
     }
+  }
+
+  /**
+   * add custom css classes to loadable component
+   */
+  private addCustomCssClasses(): void {
+    if (this._hasLoadedComponentChunk && this._componentRef && this._componentRef.location)
+      this.componentCssClasses.map((cssClass: string) => this._renderer.addClass(this._componentRef.location.nativeElement, cssClass));
   }
 }
