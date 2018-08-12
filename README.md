@@ -6,7 +6,7 @@ Dynamically lazy load & code-split your Angular components.
 
 Core functionality derived _heavily_ from [dynamically loading components with angular-cli](https://blog.angularindepth.com/dynamically-loading-components-with-angular-cli-92a3c69bcd28)
 
-## Easily create dynamic ✨, code-split ⚡, components in Angular 🅰
+## Easily 💤 lazy load & ⚡ code-split, components in 🅰 Angular
 
 🚧 no mucking around with seperate build processes
 
@@ -20,6 +20,8 @@ Core functionality derived _heavily_ from [dynamically loading components with a
 
 🤓 ingenious core pattern thought up by _[actual smart people](https://blog.angularindepth.com/dynamically-loading-components-with-angular-cli-92a3c69bcd28)_
 
+---
+
 ## Installation
 
 Install via npm;
@@ -27,6 +29,8 @@ Install via npm;
 ```
 npm i ngx-loadable-component
 ```
+
+---
 
 ## Setup
 
@@ -111,6 +115,8 @@ import { appLoadableManifests } from './app-loadable.manifests';
 export class AppModule { }
 ```
 
+---
+
 ## Usage (basic)
 
 Add a **loadable component** where needed:
@@ -144,6 +150,8 @@ export class AppComponent {
   loadUpsideDownFaceComponent: boolean = false;
 }
 ```
+
+---
 
 ## Usage (with Inputs/Outputs)
 
@@ -252,7 +260,40 @@ export class AppComponent {
 }
 ```
 
-And voila! we now have input/output binding 👌 (**ngx-loadable-component** will handle the change detection).
+And voila! we now have input/output binding 👌.
+
+---
+
+## Usage (add custom css classes)
+
+Custom css classes can be passed via the _loadable component_ `componentCssClasses` input.
+These will be added to the host element of the provided loadable component. e.g.
+
+_app.component.html_
+
+```html
+<div class="app--emojis">
+
+    <loadable-component ... [componentCssClasses]="customCssClasses" >
+        ...
+    </loadable-component>
+
+</div>
+```
+
+_app.component.ts_
+
+```typescript
+@Component({ ... })
+export class AppComponent {
+  ...
+  // custom css classes
+  customCssClasses: Array<string> = ['my-custom--class--1', 'my-custom--class--2']
+  ...
+}
+```
+
+---
 
 ## Author
 
@@ -263,6 +304,8 @@ And voila! we now have input/output binding 👌 (**ngx-loadable-component** wil
 🐤 twitter: [@danharris_io](http://twitter.com/danharris_io)
 
 ☕ made with love and late nights
+
+🤷‍ this package works well for my use case...
 
 ## Odds & Ends
 
