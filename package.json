@@ -1,6 +1,6 @@
 {
   "name": "ngx-loadable-component-app",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1",
   "description": "Dynamically load & code-split your Angular components.",
   "author": "Dan Harris <me@danharris.io> (https://danharris.io/)",
   "keywords": [
