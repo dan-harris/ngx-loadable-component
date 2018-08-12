@@ -228,6 +228,7 @@ export class LoadableComponent implements OnInit, OnDestroy {
         if (this._componentRef.instance[record.key]) this._componentRef.instance[record.key] = null;
       });
       // run change detection
+      this._changeDetectorRef.detectChanges();
       this._componentRef.changeDetectorRef.detectChanges();
     }
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-star-struck-face-emoji',
@@ -55,8 +55,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         margin-top: 1.5rem;
       }
     `
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
 })
 export class StarStruckFaceEmojiComponent {
   constructor() {}
