@@ -14,7 +14,8 @@ body {
 }
 
 /* default button */
-button {
+button,
+input {
   background: none;
   border: 2px solid black;
   font-size: 1rem;

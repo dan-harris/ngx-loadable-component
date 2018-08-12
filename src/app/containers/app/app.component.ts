@@ -13,6 +13,7 @@ import { UpsideDownFaceEmojiComponentOutputs } from '../../components/upside-dow
         <!-- action buttons -->
         <div class="app--buttons">
           <button (click)="onClick()">Load</button>
+          <input #dynamicInput (keyup)="onInputChange(dynamicInput.value)"/>
         </div>
 
         <!-- emoji cards -->
@@ -54,6 +55,9 @@ import { UpsideDownFaceEmojiComponentOutputs } from '../../components/upside-dow
       .app--emoji--component {
         display: flex;
       }
+      input {
+        margin-left: 1rem;
+      }
     `
   ]
 })
@@ -77,9 +81,14 @@ export class AppComponent {
    */
   customCssClasses: Array<string> = ['my-custom--class--1', 'my-custom--class--2'];
 
+  /**
+   * input text
+   */
+  private _inputText: string = 'upside down';
+
   get upsideDownFaceInputs(): UpsideDownFaceEmojiComponentInputs {
     return {
-      text: 'upside down'
+      text: this._inputText
     };
   }
 
@@ -92,6 +101,10 @@ export class AppComponent {
   onClickedUpsideDownFace(text: string): void {
     // tslint:disable-next-line:no-console
     console.log(`🖱 ${text}`);
+  }
+
+  onInputChange(text: string): void {
+    this._inputText = text;
   }
 
   onClick(): void {

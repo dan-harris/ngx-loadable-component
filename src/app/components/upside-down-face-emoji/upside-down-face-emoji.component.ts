@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-upside-down-face-emoji',
@@ -55,8 +55,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
         margin-top: 1.5rem;
       }
     `
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
 })
 export class UpsideDownFaceEmojiComponent {
   @Input() text: string = 'no text';

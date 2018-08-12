@@ -2,7 +2,8 @@ import { browser, by, element, ElementFinder, promise } from 'protractor';
 
 export class AppPage {
   LOADABLE_THINKING_FACE_CUSTOM_CSS_CLASS: string = 'my-custom--class--1';
-  UPSIDE_DOWN_FACE_INPUT_TEXT: string = 'upside down';
+  UPSIDE_DOWN_FACE_INPUT_TEXT_INITIAL: string = 'upside down';
+  UPSIDE_DOWN_FACE_INPUT_TEXT_NEW: string = 'down upside';
 
   navigateTo(): promise.Promise<any> {
     return browser.get('/');
@@ -14,6 +15,10 @@ export class AppPage {
 
   clickLoadButton(): promise.Promise<void> {
     return this.getLoadButton().click();
+  }
+
+  getInputControl(): ElementFinder {
+    return element(by.css('.app--buttons input'));
   }
 
   getLoadableComponent(): ElementFinder {
@@ -30,6 +35,14 @@ export class AppPage {
 
   getLoadableUpsideDownFaceComponent(): ElementFinder {
     return element(by.css('app-upside-down-face-emoji'));
+  }
+
+  getLoadableUpsideDownFaceText(): ElementFinder {
+    return this.getLoadableUpsideDownFaceComponent().element(by.css('.emoji--text'));
+  }
+
+  setUpsideDownFaceInputValue(value: string): promise.Promise<void> {
+    return this.getInputControl().sendKeys(value.toUpperCase());
   }
 
   clickUpsideDownFaceComponent(): promise.Promise<void> {

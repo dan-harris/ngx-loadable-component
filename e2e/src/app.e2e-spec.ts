@@ -50,13 +50,23 @@ describe('ngx-loadable-component test app', async () => {
     });
   });
 
+  describe('when component has inputs', async () => {
+    it('should propagate input values', () => {
+      page.clickLoadButton();
+      page.clickLoadButton();
+      page.clickLoadButton();
+      page.setUpsideDownFaceInputValue(page.UPSIDE_DOWN_FACE_INPUT_TEXT_NEW.toUpperCase());
+      expect(page.getLoadableUpsideDownFaceText().getText()).toBe(page.UPSIDE_DOWN_FACE_INPUT_TEXT_NEW.toUpperCase());
+    });
+  });
+
   describe('when component has outputs', async () => {
     it('should emit output events', () => {
       page.clickLoadButton();
       page.clickLoadButton();
       page.clickLoadButton();
       page.clickUpsideDownFaceComponent();
-      logs.expect('🖱', page.UPSIDE_DOWN_FACE_INPUT_TEXT);
+      logs.expect('🖱', page.UPSIDE_DOWN_FACE_INPUT_TEXT_INITIAL);
       return logs.verify();
     });
   });
