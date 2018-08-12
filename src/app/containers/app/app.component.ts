@@ -13,6 +13,7 @@ import { UpsideDownFaceEmojiComponentOutputs } from '../../components/upside-dow
         <!-- action buttons -->
         <div class="app--buttons">
           <button (click)="onClick()">Load</button>
+          <input #dynamicInput (keyup)="onInputChange(dynamicInput.value)"/>
         </div>
 
         <!-- emoji cards -->
@@ -20,7 +21,7 @@ import { UpsideDownFaceEmojiComponentOutputs } from '../../components/upside-dow
           <loadable-component [componentId]="STAR_STRUCK_FACE_COMPONENT_ID" [loadComponent]="loadStarStruckFaceComponent"  class="app--emoji--component">
             <app-placeholder-emoji [isLoading]="loadStarStruckFaceComponent"></app-placeholder-emoji>
           </loadable-component>
-          <loadable-component [componentId]="THINKING_FACE_COMPONENT_ID" [loadComponent]="loadThinkingFaceComponent"  class="app--emoji--component">
+          <loadable-component [componentId]="THINKING_FACE_COMPONENT_ID" [loadComponent]="loadThinkingFaceComponent"  [componentCssClasses]="customCssClasses" class="app--emoji--component">
             <app-placeholder-emoji [isLoading]="loadThinkingFaceComponent"></app-placeholder-emoji>
           </loadable-component>
           <loadable-component [componentId]="UPSIDE_DOWN_FACE_COMPONENT_ID" [loadComponent]="loadUpsideDownFaceComponent" [componentInputs]="upsideDownFaceInputs" [componentOutputs]="upsideDownFaceOutputs" class="app--emoji--component">
@@ -54,23 +55,40 @@ import { UpsideDownFaceEmojiComponentOutputs } from '../../components/upside-dow
       .app--emoji--component {
         display: flex;
       }
+      input {
+        margin-left: 1rem;
+      }
     `
   ]
 })
 export class AppComponent {
-  // loadable component ids
+  /**
+   * loadable component ids
+   */
   STAR_STRUCK_FACE_COMPONENT_ID: string = LoadableComponentIds.STAR_STRUCK_FACE;
   THINKING_FACE_COMPONENT_ID: string = LoadableComponentIds.THINKING_FACE;
   UPSIDE_DOWN_FACE_COMPONENT_ID: string = LoadableComponentIds.UPSIDE_DOWN_FACE;
 
-  // flags to load components
+  /**
+   * flags to load components
+   */
   loadStarStruckFaceComponent: boolean = false;
   loadThinkingFaceComponent: boolean = false;
   loadUpsideDownFaceComponent: boolean = false;
 
+  /**
+   * custom css classes
+   */
+  customCssClasses: Array<string> = ['my-custom--class--1', 'my-custom--class--2'];
+
+  /**
+   * input text
+   */
+  private _inputText: string = 'upside down';
+
   get upsideDownFaceInputs(): UpsideDownFaceEmojiComponentInputs {
     return {
-      text: 'upside down'
+      text: this._inputText
     };
   }
 
@@ -82,7 +100,11 @@ export class AppComponent {
 
   onClickedUpsideDownFace(text: string): void {
     // tslint:disable-next-line:no-console
-    console.log('🖱', text);
+    console.log(`🖱 ${text}`);
+  }
+
+  onInputChange(text: string): void {
+    this._inputText = text;
   }
 
   onClick(): void {

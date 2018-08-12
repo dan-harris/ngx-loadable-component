@@ -1,6 +1,6 @@
 {
   "name": "ngx-loadable-component-app",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1",
   "description": "Dynamically load & code-split your Angular components.",
   "author": "Dan Harris <me@danharris.io> (https://danharris.io/)",
   "keywords": [
@@ -20,7 +20,9 @@
     "start": "ng serve",
     "start:full": "npm run build:lib && ng serve",
     "build": "ng build",
-    "build:lib": "ng build --prod ngx-loadable-component",
+    "build:full": "npm run build && npm run build:lib",
+    "build:lib": "ng build --prod ngx-loadable-component && npm run build:lib:copy",
+    "build:lib:copy": "cpy README.md LICENSE dist/ngx-loadable-component",
     "test": "ng test --watch=false",
     "test:lib": "ng test ngx-loadable-component --watch=false",
     "lint": "ng lint",
@@ -29,7 +31,9 @@
     "commit": "git-cz",
     "commitmsg": "validate-commit-msg",
     "precommit": "lint-staged",
-    "prepush": "npm run e2e"
+    "prepush": "npm run e2e",
+    "prepublish": "npm run e2e",
+    "publish": "npm publish dist/ngx-loadable-component"
   },
   "private": true,
   "dependencies": {
@@ -59,6 +63,7 @@
     "bundlesize": "^0.17.0",
     "codelyzer": "~4.2.1",
     "commitizen": "^2.10.1",
+    "cpy-cli": "^2.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^0.14.3",
     "jasmine-core": "~2.99.1",
@@ -73,6 +78,7 @@
     "ng-packagr": "^3.0.0-rc.2",
     "prettier": "^1.13.7",
     "protractor": "~5.3.0",
+    "protractor-browser-logs": "^1.0.351",
     "protractor-console-plugin": "^0.1.1",
     "puppeteer": "^0.13.0",
     "ts-node": "~5.0.1",

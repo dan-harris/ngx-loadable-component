@@ -6,21 +6,21 @@ Dynamically lazy load & code-split your Angular components.
 
 Core functionality derived _heavily_ from [dynamically loading components with angular-cli](https://blog.angularindepth.com/dynamically-loading-components-with-angular-cli-92a3c69bcd28)
 
-## Easily create dynamic ✨, code-split ⚡, components in Angular 🅰
+## Easily 💤 lazy load & ⚡ code-split, components in 🅰 Angular
 
 🚧 no mucking around with seperate build processes
-
-✨ dynamically instantiate components
 
 💤 lazy load components
 
 🆓 free code splitting via Angular
 
-⚡ [demo](http://ngx-loadable-component.danharris.io)
+⚡ [demo](https://ngx-loadable-component-app-chfnxlwwxx.now.sh/)
 
 🤓 ingenious core pattern thought up by _[actual smart people](https://blog.angularindepth.com/dynamically-loading-components-with-angular-cli-92a3c69bcd28)_
 
-## Installation
+👌 created for the use case of seperating large single components (such as wysiwg editors, charts .etc) from the rest of your app code.
+
+# Installation
 
 Install via npm;
 
@@ -28,7 +28,7 @@ Install via npm;
 npm i ngx-loadable-component
 ```
 
-## Setup
+# Setup
 
 Create a component you wish to dynamically load... e.g. **loadable component**
 
@@ -36,12 +36,13 @@ _upside-down-face-emoji.component.ts_
 
 ```typescript
 @Component({
-  selector: 'app-upside-down-face-emoji',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-upside-down-face-emoji'
   ...
 })
 export class UpsideDownFaceEmojiComponent { }
 ```
+
+_* its important that this component does not use `OnPush` changeDetection as this will interfere with the *loadable component\* setup_
 
 Then create a module for the **loadable component**:
 
@@ -111,7 +112,7 @@ import { appLoadableManifests } from './app-loadable.manifests';
 export class AppModule { }
 ```
 
-## Usage (basic)
+# Usage (basic)
 
 Add a **loadable component** where needed:
 
@@ -145,7 +146,7 @@ export class AppComponent {
 }
 ```
 
-## Usage (with Inputs/Outputs)
+# Usage (with Inputs/Outputs)
 
 If our **loadable component** has inputs/outputs - like so:
 
@@ -252,9 +253,39 @@ export class AppComponent {
 }
 ```
 
-And voila! we now have input/output binding 👌 (**ngx-loadable-component** will handle the change detection).
+And voila! we now have input/output binding 👌.
+_\* note that the inputs in the parent component (of the loadable component - e.g. `upsideDownFaceInputs()`) have to be within a getter or function for change detection to apply correctly_
 
-## Author
+# Usage (add custom css classes)
+
+Custom css classes can be passed via the _loadable component_ `componentCssClasses` input.
+These will be added to the host element of the provided loadable component. e.g.
+
+_app.component.html_
+
+```html
+<div class="app--emojis">
+
+    <loadable-component ... [componentCssClasses]="customCssClasses" >
+        ...
+    </loadable-component>
+
+</div>
+```
+
+_app.component.ts_
+
+```typescript
+@Component({ ... })
+export class AppComponent {
+  ...
+  // custom css classes
+  customCssClasses: Array<string> = ['my-custom--class--1', 'my-custom--class--2']
+  ...
+}
+```
+
+# Author
 
 🤔 created by Dan Harris
 
@@ -264,7 +295,9 @@ And voila! we now have input/output binding 👌 (**ngx-loadable-component** wil
 
 ☕ made with love and late nights
 
-## Odds & Ends
+🤷‍ this package works well for my use case... no guarantees made to its general use
+
+# Odds & Ends
 
 👀 MIT License
 
