@@ -1,23 +1,12 @@
-
-import {
-  ANALYZE_FOR_ENTRY_COMPONENTS,
-  ModuleWithProviders,
-  NgModule,
-  NgModuleFactoryLoader,
-  SystemJsNgModuleLoader,
-  Type
-} from '@angular/core';
-import { ROUTES } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { ANALYZE_FOR_ENTRY_COMPONENTS, ModuleWithProviders, NgModule, NgModuleFactoryLoader, SystemJsNgModuleLoader, Type } from '@angular/core';
+import { ROUTES } from '@angular/router';
 // components
 import { LoadableComponent } from './components/loadable.component';
-
-// services
-import { LoadableService } from './services/loadable.service';
-
 // models
 import { LOADABLE_COMPONENT, LOADABLE_MANIFESTS, LoadableManifest } from './models/loadable-manifest.model';
+// services
+import { LoadableService } from './services/loadable.service';
 
 @NgModule({
   imports: [CommonModule],
@@ -25,7 +14,6 @@ import { LOADABLE_COMPONENT, LOADABLE_MANIFESTS, LoadableManifest } from './mode
   exports: [LoadableComponent]
 })
 export class LoadableComponentModule {
-
   /**
    * module root instantiation
    * (used to setup injectable providers used in dynamic component load/render)
@@ -45,6 +33,16 @@ export class LoadableComponentModule {
   }
 
   /**
+   * feature module import
+   * (used to import loadable component helper component to feature modules)
+   */
+  static forFeature(): ModuleWithProviders {
+    return {
+      ngModule: LoadableComponentModule
+    };
+  }
+
+  /**
    * module child instantiation
    * (used by a loadable component module to register themselves as loadable)
    */
@@ -60,6 +58,4 @@ export class LoadableComponentModule {
       ]
     };
   }
-
 }
-
