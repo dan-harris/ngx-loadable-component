@@ -112,6 +112,25 @@ import { appLoadableManifests } from './app-loadable.manifests';
 export class AppModule { }
 ```
 
+Be sure to import the **loadable component module** into any feature modules you use it in:
+
+_my-feature.module.ts_
+
+```typescript
+import { LoadableComponentModule } from 'ngx-loadable-component';
+
+@NgModule({
+  declarations: [
+      ...
+  ],
+  imports: [
+    ...
+    LoadableComponentModule.forFeature()
+  ]
+})
+export class MyFeatureModule { }
+```
+
 # Usage (basic)
 
 Add a **loadable component** where needed:
