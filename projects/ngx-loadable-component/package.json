@@ -1,7 +1,7 @@
 {
   "name": "ngx-loadable-component",
-  "version": "0.0.1-alpha.3",
-  "description": "Dynamically load & code-split your Angular components.",
+  "version": "0.0.2",
+  "description": "Lazy load & code-split your Angular components.",
   "author": "Dan Harris <me@danharris.io> (https://danharris.io/)",
   "keywords": [
     "angular",
@@ -22,6 +22,7 @@
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/router": "^6.0.0-rc.0 || ^6.0.0",
     "rxjs": "^6.0.0"
   }
 }
