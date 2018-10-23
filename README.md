@@ -2,7 +2,7 @@
 
 Dynamically lazy load & code-split your Angular components.
 
-![](https://badgen.net/github/license/dan-harris/ngx-loadable-component) ![](https://badgen.net/npm/v/ngx-loadable-component) ![](https://badgen.net/bundlephobia/minzip/ngx-loadable-component) ![](https://img.shields.io/badge/angular-%5E6.0.0-red.svg) ![](https://img.shields.io/badge/awesome-yes%20%F0%9F%91%8D-bb0073.svg)
+![](https://badgen.net/npm/v/ngx-loadable-component) ![](https://badgen.net/bundlephobia/minzip/ngx-loadable-component) ![](https://img.shields.io/badge/angular-v6%20%7C%20v7-red.svg) ![](https://badgen.net/github/license/dan-harris/ngx-loadable-component) ![](https://img.shields.io/badge/awesome-yes%20%F0%9F%91%8D-bb0073.svg)
 
 (Supports Angular 6+)
 
@@ -44,7 +44,7 @@ _upside-down-face-emoji.component.ts_
 export class UpsideDownFaceEmojiComponent { }
 ```
 
-_* its important that this component does not use `OnPush` changeDetection as this will interfere with the *loadable component\* setup_
+_\* its important that this component does not use `OnPush` changeDetection as this will interfere with the **loadable component** setup_
 
 Then create a module for the **loadable component**:
 
