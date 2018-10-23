@@ -2,6 +2,8 @@
 
 Dynamically lazy load & code-split your Angular components.
 
+![](https://badgen.net/github/license/dan-harris/ngx-loadable-component) ![](https://badgen.net/npm/v/ngx-loadable-component) ![](https://badgen.net/bundlephobia/minzip/ngx-loadable-component) ![](https://img.shields.io/badge/angular-%5E6.0.0-red.svg) ![](https://img.shields.io/badge/awesome-yes%20%F0%9F%91%8D-bb0073.svg)
+
 (Supports Angular 6+)
 
 Core functionality derived _heavily_ from [dynamically loading components with angular-cli](https://blog.angularindepth.com/dynamically-loading-components-with-angular-cli-92a3c69bcd28)
