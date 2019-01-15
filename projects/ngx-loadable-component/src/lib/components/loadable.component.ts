@@ -217,15 +217,15 @@ export class LoadableComponent implements OnInit, OnDestroy {
     if (changes && this._hasLoadedComponentChunk) {
       // added an input
       changes.forEachAddedItem((record: KeyValueChangeRecord<any, any>) => {
-        if (record.currentValue && this._componentRef.instance[record.key]) this._componentRef.instance[record.key] = record.currentValue;
+        this._componentRef.instance[record.key] = record.currentValue;
       });
       // changed an input value
       changes.forEachChangedItem((record: KeyValueChangeRecord<any, any>) => {
-        if (record.currentValue && this._componentRef.instance[record.key]) this._componentRef.instance[record.key] = record.currentValue;
+        this._componentRef.instance[record.key] = record.currentValue;
       });
       // removed an input value (this shouldnt happen... but will handle it)
       changes.forEachRemovedItem((record: KeyValueChangeRecord<any, any>) => {
-        if (this._componentRef.instance[record.key]) this._componentRef.instance[record.key] = null;
+        this._componentRef.instance[record.key] = null;
       });
       // run change detection
       this._changeDetectorRef.detectChanges();

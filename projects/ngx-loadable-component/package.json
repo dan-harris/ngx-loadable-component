@@ -1,6 +1,6 @@
 {
   "name": "ngx-loadable-component",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Lazy load & code-split your Angular components.",
   "author": "Dan Harris <me@danharris.io> (https://danharris.io/)",
   "keywords": [

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-upside-down-face-emoji',
@@ -25,6 +25,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
         align-items: center;
         height: 100%;
         width: 100%;
+        transition: opacity 0.2s ease-out;
+      }
+      :host(.disabled) {
+        opacity: 0.4;
       }
 
       /* fadein animation */
@@ -60,7 +64,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class UpsideDownFaceEmojiComponent {
   @Input() text: string = 'no text';
 
-  @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
+  @Input()
+  @HostBinding('class.disabled')
+  isDisabled: boolean = false;
+
+  @Output() readonly clicked: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() {}
 

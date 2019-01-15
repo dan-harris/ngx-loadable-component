@@ -23,6 +23,7 @@
       }
     ],
     "i18n": false,
-    "no-unused-css": false
+    "no-unused-css": false,
+    "prefer-inline-decorator": false
   }
 }
