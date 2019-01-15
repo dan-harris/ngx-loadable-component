@@ -14,6 +14,10 @@ describe('ngx-loadable-component test app', async () => {
     logs = browserLogs(browser);
     logs.ignore('enableProdMode()');
     logs.ignore('failed: WebSocket is closed');
+    logs.ignore(
+      'http://localhost:4200/ 1 Active resource loading counts reached a per-frame limit while the tab was in background. Network requests will be delayed until a previous loading finishes, or the tab is brought to the foreground. See https://www.chromestatus.com/feature/5527160148197376 for more details'
+    );
+    logs.ignore(logs.DEBUG);
   });
 
   it('should contain loadable component', () => {
@@ -57,6 +61,18 @@ describe('ngx-loadable-component test app', async () => {
       page.clickLoadButton();
       page.setUpsideDownFaceInputValue(page.UPSIDE_DOWN_FACE_INPUT_TEXT_NEW.toUpperCase());
       expect(page.getLoadableUpsideDownFaceText().getText()).toBe(page.UPSIDE_DOWN_FACE_INPUT_TEXT_NEW.toUpperCase());
+    });
+
+    it('should propagate input values (boolean)', () => {
+      page.clickLoadButton();
+      page.clickLoadButton();
+      page.clickLoadButton();
+      page.clickDisableButton();
+      expect(page.getLoadableUpsideDownFaceComponent().getAttribute('class')).toMatch(page.DISABLED_CUSTOM_CSS_CLASS);
+      page.clickDisableButton();
+      expect(page.getLoadableUpsideDownFaceComponent().getAttribute('class')).not.toMatch(page.DISABLED_CUSTOM_CSS_CLASS);
+      page.clickDisableButton();
+      expect(page.getLoadableUpsideDownFaceComponent().getAttribute('class')).toMatch(page.DISABLED_CUSTOM_CSS_CLASS);
     });
   });
 

@@ -2,6 +2,7 @@ import { browser, by, element, ElementFinder, promise } from 'protractor';
 
 export class AppPage {
   LOADABLE_THINKING_FACE_CUSTOM_CSS_CLASS: string = 'my-custom--class--1';
+  DISABLED_CUSTOM_CSS_CLASS: string = 'disabled';
   UPSIDE_DOWN_FACE_INPUT_TEXT_INITIAL: string = 'upside down';
   UPSIDE_DOWN_FACE_INPUT_TEXT_NEW: string = 'down upside';
 
@@ -10,11 +11,19 @@ export class AppPage {
   }
 
   getLoadButton(): ElementFinder {
-    return element(by.css('.app--buttons button'));
+    return element(by.css('[data-test-id="load-button"]'));
   }
 
   clickLoadButton(): promise.Promise<void> {
     return this.getLoadButton().click();
+  }
+
+  getDisableButton(): ElementFinder {
+    return element(by.css('[data-test-id="disable-button"]'));
+  }
+
+  clickDisableButton(): promise.Promise<void> {
+    return this.getDisableButton().click();
   }
 
   getInputControl(): ElementFinder {
