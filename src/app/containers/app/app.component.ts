@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { LoadableComponentIds } from '../../app-loadable.manifests';
 import { UpsideDownFaceEmojiComponentInputs } from '../../components/upside-down-face-emoji/models/upside-down-face-emoji.inputs.model';
 import { UpsideDownFaceEmojiComponentOutputs } from '../../components/upside-down-face-emoji/models/upside-down-face-emoji.outputs.model';
@@ -12,7 +12,8 @@ import { UpsideDownFaceEmojiComponentOutputs } from '../../components/upside-dow
 
         <!-- action buttons -->
         <div class="app--buttons">
-          <button (click)="onClick()">Load</button>
+          <button (click)="onClickLoad()" data-test-id="load-button">Load</button>
+          <button (click)="onClickDisable()" data-test-id="disable-button">Disable</button>
           <input #dynamicInput (keyup)="onInputChange(dynamicInput.value)"/>
         </div>
 
@@ -46,7 +47,8 @@ import { UpsideDownFaceEmojiComponentOutputs } from '../../components/upside-dow
         display: flex;
         flex-direction: column;
       }
-      .app--buttons {
+      .app--buttons button:not(:first-of-type) {
+        margin-left: 0.5rem;
       }
       .app--emojis {
         display: flex;
@@ -86,9 +88,17 @@ export class AppComponent {
    */
   private _inputText: string = 'upside down';
 
+  /**
+   * disabled flag
+   */
+  private _isDisabled: boolean = false;
+
+  constructor(private readonly cdRef: ChangeDetectorRef) {}
+
   get upsideDownFaceInputs(): UpsideDownFaceEmojiComponentInputs {
     return {
-      text: this._inputText
+      text: this._inputText,
+      isDisabled: this._isDisabled
     };
   }
 
@@ -107,9 +117,14 @@ export class AppComponent {
     this._inputText = text;
   }
 
-  onClick(): void {
+  onClickLoad(): void {
     if (!this.loadStarStruckFaceComponent) this.loadStarStruckFaceComponent = true;
     else if (!this.loadThinkingFaceComponent) this.loadThinkingFaceComponent = true;
     else if (!this.loadUpsideDownFaceComponent) this.loadUpsideDownFaceComponent = true;
+  }
+
+  onClickDisable(): void {
+    this._isDisabled = !this._isDisabled;
+    this.cdRef.detectChanges();
   }
 }
