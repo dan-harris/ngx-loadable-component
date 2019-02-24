@@ -30,6 +30,8 @@ Install via npm;
 npm i ngx-loadable-component
 ```
 
+_\* unfortunately, only an aot build angular setup will work correctly within the **loadable component** setup 🤷 ️ .. an example of how this is setup can be seen within the base directory of this repo(app demo)_
+
 # Setup
 
 Create a component you wish to dynamically load... e.g. **loadable component**
